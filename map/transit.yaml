@@ -11,7 +11,7 @@ labels-global:
     - &text_visible_populated_places  true
     - &icon_visible_populated_places  true
     - &text_visible_neighbourhoods    true
-    - &text_visible_neighbourhoods_e  true
+    - &text_visible_neighbourhoods_e  false
     - &text_visible_building          true
     - &text_visible_address           true
     - &text_visible_water_labels      true
@@ -30,11 +30,11 @@ labels-global:
     - &text_visible_highway           true
     - &text_visible_highway_e         false
     - &text_visible_trunk_primary     true
-    - &text_visible_trunk_primary_e   true
+    - &text_visible_trunk_primary_e   false
     - &text_visible_secondary         true
-    - &text_visible_secondary_e       true
+    - &text_visible_secondary_e       false
     - &text_visible_tertiary          true
-    - &text_visible_tertiary_e        true
+    - &text_visible_tertiary_e        false
     - &text_visible_minor_road        true
     - &text_visible_minor_road_e      true
     - &text_visible_service_road      true
@@ -689,6 +689,9 @@ styles:
         base: points
         texture: pois
         interactive: true
+    text-blend-order:
+        base: text
+        blend_order: 1
         
     lines_transparent:
         base: lines
@@ -714,16 +717,33 @@ layers:
             lines:
                 order: 49
                 color: black
-                width: [[7,1px],[8,2px],[11,3px]]
+                width: [[7,1.5px],[8,2px],[11,3px],[18,3m]]
                 interactive: true
                 outline:
                     color: white
                     width: [[12,0.5px],[13,1px]]
+#        railway:
+#            filter: { kind: railway, $zoom: { min: 15 } }
+#            draw:
+#                lines:
+#                    order: 48
+#                    color: grey
+#                    width: [[14,1px],[16,2px],[18,2m]]
+#                    outline:
+#                        color: []black    
+#                        width: [[12,0.5px],[13,1px]]
+#        light_rail:
+#            filter: { kind: light_rail, $zoom: { min: 15 } }
+#            draw:
+#                lines:
+#                    color: grey
+#                    width: [[14,1px],[16,2px],[18,1m]]
+#                    order: 50
         colored:
             filter: { colour: true }
             draw:
                 lines:
-                    order: 50
+                    order: 51
                     width: [[9,2px],[11,3px],[12,4px]]
                     color: |
                         function() {
@@ -739,21 +759,44 @@ layers:
                             var c = hexToRgb(feature.colour);
                             return [c.r/255, c.g/255, c.b/255];
                         }
-                outline:
-                    width: 1px
+#                    outline:
+#                        width: 1px
+        labels-transit-early:
+            filter: { $zoom: [13,14], ref: true }
+            draw:
+                text:
+                    priority: 20
+                    text_source: function() { if( feature.ref.length < 4 ) { return feature.ref; } else { return ''; } }
+                    font:
+                        fill: black
+                        size: 12px
+                        weight: bold
+                        stroke: { color: white, width: 2 }
+        labels-transit:
+            filter: { $zoom: { min: 15 } }
+            draw:
+                text:
+                    priority: 20
+                    text_source: ref
+                    font:
+                        fill: black
+                        size: 14px
+                        weight: bold
+                        stroke: { color: white, width: 2 }
 
     station-labels:
         data: { source: osm, layer: [pois,landuse,buildings] }
         filter: 
-            kind: [station, tram_stop, bus_stop, bus_station, subway_entrance ]
+            kind: [station, tram_stop, bus_station, subway_entrance ]
             any:
                 - area: false
                   all:
-                      - $zoom: { min: 12 }
+                      - $zoom: { min: 13 }
                 - area: true
                   all:
                       - $geometry: point
                       - kind: true
+                      - $zoom: { min: 13 }
         draw:
             icons:
                 size: [[13, 12px], [16, 16px], [19, 20px]]
@@ -768,8 +811,9 @@ layers:
                 font:
                     weight: 500
                     fill: black
+                    weight: bold
                     size: 12px
-                    stroke: { color: white, width: 4 }
+                    stroke: { color: white, width: 3 }
         poi_labels-z14:
             filter: { $zoom: [14] }
             draw: { text-blend-order: { font: { size: 11px } } }
@@ -822,6 +866,8 @@ layers:
         tram-stop-early-z15:
             filter: { kind: tram_stop, $zoom: [15] }
             draw:
+                icons:
+                    sprite: light-rail
                 text-blend-order:
                     visible: false
         tram-stop:
@@ -829,12 +875,13 @@ layers:
             draw:
                 icons:
                     size: [[13, 12px], [16, 18px]]
+                    sprite: light-rail
                 text-blend-order:
                     offset: [[13, [0, 6px]], [16, [0, 9px]]]
-        bus-stop-bus-station-labels:
+        bus-station-labels:
             filter:
-                kind: [bus_stop, bus_station]
-                $zoom: { min: 18 }
+                kind: [bus_station]
+                $zoom: { min: 16 }
             draw:
                 text-blend-order:
                     interactive: true
@@ -857,9 +904,12 @@ layers:
             draw:
                 icons:
                     sprite: generic
+                    size: [[17, 12px], [19, 14px]]
+                    priority: 18
                 text-blend-order:
+                    offset: [[17, [0, 6px]], [19, [0, 7px]]] # offset tracks alongside icon size (half icon height)
                     interactive: true
-                    text_source: ref
+                    text_source: function() { if( feature.ref && feature.name ) { return '[' + feature.ref + ']\n' + feature.name; } else { return feature.name; } }
                     font:
                         fill: black
                         size: 12px
@@ -1194,6 +1244,7 @@ layers:
                         priority: 20
                         visible: *text_visible_highway_e
                         text_source: ref
+                        repeat_distance: 100px
                         font:
                             fill: *text_fill
                             size: 8px
