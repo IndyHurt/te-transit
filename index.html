@@ -2,7 +2,7 @@
 <html lang="en-us">
   <head>
     <meta charset="UTF-8">
-    <title>Hospital Polygons</title>
+    <title>Transit Colors</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
@@ -16,20 +16,20 @@
       function drawChart() {
 
         var data = google.visualization.arrayToDataTable([
-          ['Polygon or Not', 'p_hospitals'],
-          ['Hospitals without Polygons', 284],
-          ['Hospitals with Polygons',  64]
+          ['Colour or Not', 'p_colour'],
+          ['Transit without Colour', 284],
+          ['Transit with Colour',  64]
         ]);
 
         var options = {
-          title: 'Los Angeles, Hospital Polygons',
+          title: 'North America, Transit Line Colours',
           colors: ['aqua', 'grey']
         };
         
         var formatter1 = new google.visualization.NumberFormat({pattern:'###,###'});
         formatter1.format(data, 1);
         
-        var chart = new google.visualization.PieChart(document.getElementById('hospitals_piechart'));
+        var chart = new google.visualization.PieChart(document.getElementById('transit_piechart'));
 
         chart.draw(data, options);
       }
@@ -48,44 +48,42 @@
       <h1>
 <a id="opening" class="anchor" href="#opening" aria-hidden="true"><span class="octicon octicon-link"></span></a>For transit features, colors help distinguish lines!</h1>
 
-<p>Welcome to our <b>Targeted Editing</b> series where today you can hop on train, or make <a href="http://www.openstreetmap.org">OpenStreetMap</a> data excellent! (Both take about the same amount of time.)</p>
+<p>Welcome to our <b>Targeted Editing</b> series where today you can hop on your favorite transit line, or make <a href="http://www.openstreetmap.org">OpenStreetMap</a> data divine! (Both take about the same amount of time.)</p>
  
-<p>Read on for some basic uses for hospital polygons, and where you can check to see if you can use your local knowlege to add some polygons where they are needed.</p>
+<p>Read on for some basic uses for transit line colours, and where you can check to see if you can use your local knowlege to add colours where they are needed.</p>
 
 <ol style="list-style-type:disc">
-        <li><b>How can hospital polygons be used?</b>
+        <li><b>How can transit line colors be used?</b>
           <p></p>
             <ol>
-                <li>Help with map rendering.  No, this doesn&#39;t mean cook the fat out of it, this means help with how things are cartographically displayed on the map.  A map label for a point is great to have, but a polygon is even better. It adds more detail and visual appeal.</li> 
+                <li>Help with map rendering.  Transit line colours can be used to make custom maps designed specifically for transit users.</li> 
                 <p></p>
-                <li>Help with display order.  In many cases, the size of a hospital indicates significance.  When hospitals have polygons, the size of the hospital can be used to determine how much you should zoom in to the map before it appears.  Bigger hospitals can be shown sooner than smaller hospitals.</li>
+                <li>Help with wayfinding.  In many cases, the size of a hospital indicates significance.  When hospitals have polygons, the size of the hospital can be used to determine how much you should zoom in to the map before it appears.  Bigger hospitals can be shown sooner than smaller hospitals.</li>
                 <p></p>
                 <li>Help with search rank.  When searching, a search engine can use a number of things to prioritize what features are returned.  Some examples might be associated attributes like population, or even the physical size of a feature.  Since points have no area, adding a polygon could be an excellent enhancement.</li>
             </ol>
         </li>
         <p></p>
-        <li><b>We are missing some transit line colors for transit lines here!</b>
+        <li><b>We are missing some transit line colours for transit lines here!</b>
 
             <p></p>
             <ul>
-                <li>Check out this pie chart for hospitals in Los Angeles:</li>
-                <div id="hospitals_piechart" style="width: 100%; height: 500px;"></div>
+                <li>Check out this pie chart for transit lines:</li>
+                <div id="transit_piechart" style="width: 100%; height: 500px;"></div>
                 <p>We have some work to do!</p>
             </ul>
         </li>
         <p></p>
-        <li><b>How you can help improve hospitals without polygons:</b>
+        <li><b>How you can help improve transit lines without colours:</b>
             <p></p>
             <ol>
-                <li>Here is a map showing transit lines that need colors.  To add a color to a transit line, hover over one of the bright blue highlighted features to bring up an info bubble with links to editing tools that can be used to add features.</li>
+                <li>Here is a map showing transit lines that need colours.  To add a colour to a transit line, hover over one of the bright blue highlighted features to bring up an info bubble with links to editing tools that can be used to add features.</li>
                <p>
                 <iframe src="map/embed.html?transit"></iframe>
                 <br>
                 ( <a href="map/?transit" target="_blank">Open this map in a new tab ➹</a> )
                 </p> 
-                  <ul>See the wiki pages for <a href="https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dhospital">amenity=hospital</a> for lots of details and a great example.  A polygon tagged amenity=hospital should cover the grounds of the hospital, <b>not just the building footprint</b>.</ul>
-                  <p></p>
-                  <ul>(If you find a hospital that appears to have a polygon, but it's still highlighted, you may have found a duplicate or a building that was tagged amenity=hospital instead of the hospital grounds.  Improving those is a topic for another post...)</ul>
+                  <ul>See the wiki pages for <a href="http://wiki.openstreetmap.org/wiki/Key:colour">colour</a> for advantageous colour names and hex codes.</ul>
                 <p></p>
                 <li>Not familiar with Los Angeles?  Search or pan over to your home town to contribute your local knowledge to the map. You will see your changes right away in OpenStreetMap. You will also be able to see them in all versions of the <a href="https://mapzen.com/projects/vector-tiles">Mapzen Vector Tiles</a> within an hour, including the map right here on this page!</li>
                 <p></p>
@@ -107,7 +105,7 @@
     </ol>
 
       <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/IndyHurt/hospital-polygons">hospital-polygons</a> is maintained by <a href="https://github.com/IndyHurt">IndyHurt</a>.</span>
+        <span class="site-footer-owner"><a href="https://github.com/IndyHurt/te-transit">te-transit</a> is maintained by <a href="https://github.com/IndyHurt">IndyHurt</a>.</span>
 
         <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
       </footer>
