@@ -17,8 +17,8 @@
 
         var data = google.visualization.arrayToDataTable([
           ['Colour or Not', 'p_colour'],
-          ['Transit without Colour', 284],
-          ['Transit with Colour',  64]
+          ['Transit without Colour', 124],
+          ['Transit with Colour',  0]
         ]);
 
         var options = {
@@ -50,7 +50,7 @@
 
 <p>Welcome to our <b>Targeted Editing</b> series where today you can hop on your favorite transit line, or make <a href="http://www.openstreetmap.org">OpenStreetMap</a> data divine! (Both take about the same amount of time.)</p>
  
-<p>Read on for some basic uses for transit line colours, and where you can check to see if you can use your local knowlege to add colours where they are needed.</p>
+<p>Read on for some basic uses for transit line colours, why I am using the British spelling, and where you can check to see if you can use your local knowlege to add colours where they are needed.</p>
 
 <ol style="list-style-type:disc">
         <li><b>How can transit line colors be used?</b>
@@ -58,7 +58,7 @@
             <ol>
                 <li>Help with map rendering.  Transit line colours can be used to make custom maps designed specifically for transit users.</li> 
                 <p></p>
-                <li>Help with wayfinding.  A line colour represented on a map can help a traveler quickly understand generally where a route goes, without needing prior knowledge of the origin or destination stops.</li>
+                <li>Help with wayfinding.  A line colour represented on a map can help a traveler quickly understand generally where a route goes, without needing prior spatial knowledge of the origin or destination stops.</li>
             </ol>
         </li>
         <p></p>
@@ -81,8 +81,9 @@
                 <br>
                 ( <a href="map/?transit" target="_blank">Open this map in a new tab ➹</a> )
                 </p> 
-                  <ul>See the wiki pages for <a href="http://wiki.openstreetmap.org/wiki/Key:colour">colour</a> for advantageous colour names and hex codes.</ul>
+                  <ul>See the wiki pages for <a href="http://wiki.openstreetmap.org/wiki/Key:colour">colour</a> for advantageous colour names and hex codes.  You may also find features that are tagged "color" which isn't wrong, it's just not preferred.  Consistency is really valuable in data, so when possible, choose the British spelling.</ul>
                 <p></p>
+                  <ul><b>But where do you add the colour tag?</b>  It should be added to a relation like the <a href="http://wiki.openstreetmap.org/wiki/Relation:route_master">route_master</a>.  The route_master is a type of relation, and it contains all of the important information associated with the route.  Alternatively, the colour tag can be added directly to individual ways.</ul>
                 <li>Not familiar with Los Angeles?  Search or pan over to your home town to contribute your local knowledge to the map. You will see your changes right away in OpenStreetMap. You will also be able to see them in all versions of the <a href="https://mapzen.com/projects/vector-tiles">Mapzen Vector Tiles</a> within an hour, including the map right here on this page!</li>
                 <p></p>
                 <li>Need instructions on how to edit with iD?  Here are some outstanding tutorials from LearnOSM, the OpenStreetMap wiki, and the United States Department of State&#39;s Humanitarian Information Unit:</li>
