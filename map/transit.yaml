@@ -692,7 +692,7 @@ styles:
     text-blend-order:
         base: text
         blend_order: 1
-        
+
     lines_transparent:
         base: lines
         blend: overlay
@@ -715,7 +715,7 @@ layers:
             not: { kind: platform }
         draw:
             lines:
-                order: 49
+                order: 499
                 color: black
                 width: [[7,1.5px],[8,2px],[11,3px],[18,3m]]
                 interactive: true
@@ -743,7 +743,7 @@ layers:
             filter: { colour: true }
             draw:
                 lines:
-                    order: 51
+                    order: 510
                     width: [[9,2px],[11,3px],[12,4px]]
                     color: |
                         function() {
