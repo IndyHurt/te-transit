@@ -712,26 +712,26 @@ layers:
     transit:
         data: { source: osm }
         filter: 
-            not: { kind: platform }
+            not: { kind: [platform, railway] }
         draw:
             lines:
                 order: 499
                 color: black
-                width: [[7,1.5px],[8,2px],[11,3px],[18,3m]]
+                width: [[5,1.5px],[6,2px],[11,3px],[18,3m]]
                 interactive: true
                 outline:
                     color: white
                     width: [[12,0.5px],[13,1px]]
-#        railway:
-#            filter: { kind: railway, $zoom: { min: 15 } }
-#            draw:
-#                lines:
-#                    order: 48
-#                    color: grey
-#                    width: [[14,1px],[16,2px],[18,2m]]
-#                    outline:
-#                        color: []black    
-#                        width: [[12,0.5px],[13,1px]]
+        railway:
+            filter: { kind: railway }
+            draw:
+                lines:
+                    order: 480
+                    color: grey
+                    width: [[14,1px],[16,2px],[18,2m]]
+                    outline:
+                        color: black
+                        width: [[12,0.5px],[13,1px]]
 #        light_rail:
 #            filter: { kind: light_rail, $zoom: { min: 15 } }
 #            draw:
@@ -753,7 +753,7 @@ layers:
                                     r: parseInt(result[1], 16),
                                     g: parseInt(result[2], 16),
                                     b: parseInt(result[3], 16)
-                                } : null;
+                                } : { r: 255, g: 255, b: 255 };
                             }
 
                             var c = hexToRgb(feature.colour);
