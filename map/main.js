@@ -104,7 +104,7 @@ map = (function () {
                 var position = '19' + '/' + latlng[0] + '/' + latlng[1];
 
                 if (scene.selection.feature && scene.selection.feature.properties.id) {
-                    url += 'node=' + scene.selection.feature.properties.id + '#map=' + position;
+                    url += 'relation=' + Math.abs( scene.selection.feature.properties.id ) + '#map=' + position;
                 }
 
                 var josmUrl = 'http://www.openstreetmap.org/edit?editor=remote#map='+position;
@@ -124,11 +124,11 @@ map = (function () {
                 popup.style.left = (pixel.x + 0) + 'px';
                 popup.style.top = (pixel.y + 0) + 'px';
                 
-                if ( scene.selection.feature.properties.kind == 'fitness' || scene.selection.feature.properties.kind == 'gym' )
-                {
+ 			    if ( scene.selection.feature.properties.kind == 'light_rail' || scene.selection.feature.properties.kind == 'subway' || scene.selection.feature.properties.kind == 'train' || scene.selection.feature.properties.kind == 'tram' )
+			    {
 	                popup.style.visibility = 'visible';
-	            }
-                popup.innerHTML = '<span class="labelInner">' + 'You found a gym to enhance!' + '</span><br>';
+ 	            }
+                popup.innerHTML = '<span class="labelInner">' + 'You found a transit line to enhance!' + '</span><br>';
                 popup.appendChild(createEditLinkElement(url, 'iD', 'Edit with iD ➹'));
                 popup.appendChild(createEditLinkElement(josmUrl, 'JOSM', 'Edit with JOSM ➹'));
             });
