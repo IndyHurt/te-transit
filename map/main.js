@@ -48,7 +48,7 @@ map = (function () {
     window.layer = layer;
     var scene = layer.scene;
     window.scene = scene;
-    var latlng = [];
+    var latlng = {};
 
     // setView expects format ([lat, long], zoom)
     var hash = new L.Hash(map);
