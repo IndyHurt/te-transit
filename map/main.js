@@ -99,7 +99,7 @@ map = (function () {
                 var position = '19' + '/' + latlng.lat + '/' + latlng.lng;
 
                 if (properties.id) {
-                    url += 'node=' + properties.id + '#map=' + position;
+                    url += 'relation=' + Math.abs(properties.id) + '#map=' + position;
                 }
 
                 var josmUrl = 'http://www.openstreetmap.org/edit?editor=remote#map='+position;
