@@ -22,7 +22,7 @@ labels-global:
     - &icon_visible_populated_places  false
     - &text_visible_neighbourhoods    true
     - &text_visible_neighbourhoods_e  true
-    - &text_visible_building          false
+    - &text_visible_building          true
     - &text_visible_address           false
     - &text_visible_water_labels      true
     - &label_visible_landuse_green    true
@@ -755,7 +755,7 @@ layers:
                         text_source: function() { return (feature.ref + ' (' + feature.kind + ')'); }
 
     station-labels:
-        data: { source: osm, layer: [pois,landuse,buildings] }
+        data: { source: osm, layer: [pois,landuse] }
         filter: 
             kind: [station, tram_stop, bus_station, subway_entrance ]
             any:
@@ -900,37 +900,57 @@ layers:
         draw:
             polygons:
                 color: '#bdadbf'
-                order: function() { if( $zoom < 17) { return 14; } else { return 12; } }
+                order: 500
                 #extrude: function() { return feature.height || 20; }
             outline:
                 style: lines
-                order: 50
+                order: 501
                 color: '#d534df'
                 width: [[14,0.1px],[15,0.5px],[17,0.5px],[18,0.75px],[19,0.25m]]
                 #extrude: function() { return feature.height || 20; }
 
-    platforms:
+    platforms-for-transit:
         data: { source: osm, layer: transit }
         filter: { kind: platform, $zoom: { min: 15 } }
         draw:
-            lines_transparent:
-                color: [.7, .0, .0, 0.5]
+            lines:
+                color: '#bc8f96'
                 width: 5m
-                order: function() { if($zoom<17) { return 10; } else { return 100; } }
-            polygons_transparent:
-                order: function() { if($zoom<17) { return 10; } else { return 100; } }
-            outline_transparent:
-                order: function() { if($zoom<17) { return 11; } else { return 101; } }
+                order: 492
+                outline:
+                    order: 494
+            polygons:
+                order: 493
         polygon_geom:
             filter: { $geometry: polygon }
             draw:
-                polygons_transparent:
-                    color: [.7, .0, .0, 0.5]
-                lines_transparent:
+                polygons:
+                    color: '#bc8f96'
+                    outline:
+                        color: '#bc8f96'
+                        width: [[15,0px],[16,0.5px],[17,1px],[19,2px]]
+                lines:
                     visible: false
-                outline_transparent:
-                    color: [.5, .5, .5]
-                    width: [[15,0px],[16,0.5px],[17,1px],[19,2px]]
+
+    railway-late-for-transit:
+        data: { source: osm, layer: roads }
+        filter: { kind: rail, $zoom: { min: 16 }, not: { railway: [subway,light_rail,tram] } }
+        draw:
+            lines:
+                interactive: true
+                color: black
+                width: [[15,0.5px],[16,0.75px],[18,1m]]
+                # let roads sort themselves past zoom 14
+                order: 491
+                # but give them all the same outline
+                outline:
+                    order: 490
+        service:
+            filter: { service: true }
+            draw:
+                lines:
+                    color: black
+                    width: [[14,0px],[15,0.4px],[16,0.6px],[18,0.7m]]
 
 
     # Map overlays for styling the server response (using special source layer names) for route line, find_me location gem, and search result pins
@@ -1167,30 +1187,30 @@ layers:
                 lines:
                     color: *rail2
                     width: [[14,0px],[15,0.4px],[16,0.6px],[18,0.7m]]
-    platforms:
-        data: { source: osm, layer: transit }
-        filter: { kind: platform, $zoom: { min: 16 } }
-        draw:
-            lines_transparent:
-                color: *grey9
-                width: 5m
-                visible: *grey9_v
-                order: function() { if($zoom<17) { return feature.sort_key; } else { return 435; } }
-            polygons_transparent:
-                order: function() { if($zoom<17) { return feature.sort_key; } else { return 435; } }
-            outline_transparent:
-                order: function() { if($zoom<17) { return feature.sort_key; } else { return 436; } }
-        polygon_geom:
-            filter: { $geometry: polygon }
-            draw:
-                polygons_transparent:
-                    color: *grey9
-                    visible: *grey9_v
-                lines_transparent:
-                    visible: false
-                outline_transparent:
-                    color: *grey9_o
-                    width: [[15,0px],[16,0.5px],[17,1px],[19,2px]]
+#    platforms:
+#        data: { source: osm, layer: transit }
+#        filter: { kind: platform, $zoom: { min: 16 } }
+#        draw:
+#            lines_transparent:
+#                color: *grey9
+#                width: 5m
+#                visible: *grey9_v
+#                order: function() { if($zoom<17) { return feature.sort_key; } else { return 435; } }
+#            polygons_transparent:
+#                order: function() { if($zoom<17) { return feature.sort_key; } else { return 435; } }
+#            outline_transparent:
+#                order: function() { if($zoom<17) { return feature.sort_key; } else { return 436; } }
+#        polygon_geom:
+#            filter: { $geometry: polygon }
+#            draw:
+#                polygons_transparent:
+#                    color: *grey9
+#                    visible: *grey9_v
+#                lines_transparent:
+#                    visible: false
+#                outline_transparent:
+#                    color: *grey9_o
+#                    width: [[15,0px],[16,0.5px],[17,1px],[19,2px]]
     roads:
         data: { source: osm, layer: roads }
         filter: { not: { kind: rail } }
@@ -2519,21 +2539,22 @@ layers:
             all:
                 - { $zoom: { min: 16 } }
                 - $geometry: point
-                - not: { location: underground }
-                - kind: [false, building, university, college, school, kindergarten]
+                - not: { location: underground, kind: address }
+                - name: true
+#                - kind: [false, building, university, college, school, kindergarten]
             any:
-                - { $zoom: [16], area: { min: 5000 }, name: true }
-                - { $zoom: [16], area: { min: 5000 }, kind: true }
+                - { $zoom: [16], area: { min: 5000 } }
+                - { $zoom: [16], area: { min: 5000 } }
                 - { $zoom: [16], area: { min: 10000 }, landuse_kind: true }
                 - { $zoom: [16], area: { min: 7000 }, kind: [university, college, school, kindergarten] }
                 - { $zoom: [16], volume: { min: 50000 }, name: true }
-                - { $zoom: [17], area: { min: 3000 }, name: true }
+                - { $zoom: [17], area: { min: 3000 } }
                 - { $zoom: [17], area: { min: 2000 }, kind: [university, college, school, kindergarten] }
-                - { $zoom: [18], area: { min: 1000 }, name: true }
+                - { $zoom: [18], area: { min: 1000 } }
                 - { $zoom: [18], kind: [university, college, school, kindergarten] }
-                - { $zoom: [19], area: { min: 200 }, name: true }
+                - { $zoom: [19], area: { min: 200 } }
                 - { $zoom: { min: 19 }, kind: [university, college, school, kindergarten] }
-                - { $zoom: { min: 20 }, name: true }
+                - { $zoom: { min: 20 }, area: true }
         draw:
             text-blend-order:
                 interactive: true
@@ -4433,10 +4454,10 @@ layers:
                         weight: 600
 
     pois_and_landuse_labels:
-        data: { source: osm, layer: [pois,landuse,buildings] }
+        data: { source: osm, layer: [pois,landuse] }
         visible: *label_visible_poi_landuse
         filter: 
-            not: { kind: [building,farm,tree,gate,address,apron] }
+            not: { kind: [building,farm,tree,gate,apron] }
             any:
                 - area: false
                   all:
