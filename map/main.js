@@ -20,7 +20,6 @@ map = (function () {
     // location is passed through url
     if (url_hash.length == 3) {
         var defaultpos = false;
-        console.log('hash:', url_hash);
         map_start_location = [url_hash[1],url_hash[2], url_hash[0]];
         // convert from strings
         map_start_location = map_start_location.map(Number);
@@ -78,59 +77,43 @@ map = (function () {
 
     // Feature selection
     function initFeatureSelection () {
-        var info = document.getElementById('info'); // rollover-popup
         var popup = document.getElementById('popup'); // click-popup
-
-        map.addEventListener('mousemove', function (e) { latlng = [e.latlng.lat, e.latlng.lng]; });
 
         // feature edit popup
         map.getContainer().addEventListener('mousemove', function (event) {
             picking = true;
-            info.style.visibility = 'hidden';
+            latlng = map.mouseEventToLatLng(event);
 
             var pixel = { x: event.clientX, y: event.clientY };
 
             scene.getFeatureAt(pixel).then(function(selection) {
-                var feature = selection.feature;
-                if (!selection || feature == null) {
+                if (!selection || selection.feature == null || selection.feature.properties == null) {
                     picking = false;
                     popup.style.visibility = 'hidden';
                     return;
-                }
+                }                
+                var properties = selection.feature.properties;
 
                 // generate osm edit link
                 var url = 'https://www.openstreetmap.org/edit?';
+                var position = '19' + '/' + latlng.lat + '/' + latlng.lng;
 
-                var position = '19' + '/' + latlng[0] + '/' + latlng[1];
-
-                if (scene.selection.feature && scene.selection.feature.properties.id) {
-                    url += 'relation=' + Math.abs( scene.selection.feature.properties.id ) + '#map=' + position;
+                if (properties.id) {
+                    url += 'node=' + properties.id + '#map=' + position;
                 }
 
                 var josmUrl = 'http://www.openstreetmap.org/edit?editor=remote#map='+position;
                 
-                // extra label information - currently unused
-                var label = '';
-                if (feature.properties != null) {
-                    var obj = JSON.parse(JSON.stringify(feature.properties));
-                    label = "";
-                    for (x in feature.properties) {
-                        if (x == "sort_key" || x == "id") continue;
-                        val = feature.properties[x];
-                        label += "<span class='labelLine' key="+x+" value="+val+">"+x+" : "+val+"</span><br>"
-                    }
-                }
-
                 popup.style.left = (pixel.x + 0) + 'px';
                 popup.style.top = (pixel.y + 0) + 'px';
                 
- 			    if ( scene.selection.feature.properties.kind == 'light_rail' || scene.selection.feature.properties.kind == 'subway' || scene.selection.feature.properties.kind == 'train' || scene.selection.feature.properties.kind == 'tram' )
+ 			    if ( properties.kind == 'light_rail' || properties.kind == 'subway' || properties.kind == 'train' || properties.kind == 'tram' )
 			    {
 	                popup.style.visibility = 'visible';
+                    popup.innerHTML = '<span class="labelInner">' + 'You found a transit line to enhance!' + '</span><br>';
+                    popup.appendChild(createEditLinkElement(url, 'iD', 'Edit with iD ➹'));
+                    popup.appendChild(createEditLinkElement(josmUrl, 'JOSM', 'Edit with JOSM ➹'));
  	            }
-                popup.innerHTML = '<span class="labelInner">' + 'You found a transit line to enhance!' + '</span><br>';
-                popup.appendChild(createEditLinkElement(url, 'iD', 'Edit with iD ➹'));
-                popup.appendChild(createEditLinkElement(josmUrl, 'JOSM', 'Edit with JOSM ➹'));
             });
         });
 
@@ -178,27 +161,45 @@ map = (function () {
 	
 	function addGUI () {
 		// Link to edit in OSM - hold 'e' and click
-		function onMapClick(e) {
-			if (key.shift) {
-				var url = 'https://www.openstreetmap.org/edit?';
+        function onMapClick(e) {
+            var pixel = { x: e.clientX, y: e.clientY };
+            var latlng = map.mouseEventToLatLng(e.originalEvent);
+            if (key.shift) {
+                var url = 'https://www.openstreetmap.org/edit?';
+                scene.getFeatureAt(pixel).then(function(selection) {
+                    console.log(selection.feature, selection.changed);
 
-				if (scene.selection.feature && scene.selection.feature.id) {
-					url += 'way=' + scene.selection.feature.id;
-				}
+                    if (selection.feature && selection.feature.id) {
+                        url += 'way=' + selection.feature.id;
+                    }
 
-				if (scene.center) {
-					url += '#map=' + scene.baseZoom(scene.zoom) + '/' + scene.center.lat + '/' + scene.center.lng;
-				}
+                    if (latlng) {
+                        url += '#map=' + map.getZoom() + '/' + latlng.lat + '/' + latlng.lng;
+                    }
 
-				window.open(url, '_blank');
-			}
+                    window.open(url, '_blank');
+                });
 
- 			if (key.command) {
-				var url = 'http://vector.mapzen.com/osm/all/' + scene.tile_zoom + '/' + long2tile(e.latlng.lng,scene.tile_zoom)  + '/' + lat2tile(e.latlng.lat,scene.tile_zoom) + '.topojson?api_key=vector-tiles-HqUVidw';
-				window.open(url, '_blank');
-				//console.log( e );
-			}
-		}
+            }
+
+            if (key.command) {
+
+                // find minimum max_zoom of all sources
+                var max_zoom = 21;
+                for (source in scene.config.sources) {
+                    if (scene.config.sources.hasOwnProperty(source)) {
+                        if (scene.config.sources[source].max_zoom != "undefined") {
+                            max_zoom = Math.min(max_zoom, scene.config.sources[source].max_zoom);
+                        }
+                    }
+                }
+                var zoom = max_zoom < map.getZoom() ? max_zoom : Math.floor(map.getZoom());
+                var tileCoords = { x : long2tile(latlng.lng,zoom), y: lat2tile(latlng.lat,zoom), z: zoom };
+
+                var url = 'http://vector.mapzen.com/osm/all/' + zoom + '/' + tileCoords.x  + '/' + tileCoords.y + '.topojson?api_key=vector-tiles-HqUVidw';
+                window.open(url, '_blank');
+            }
+        }
 
 		map.on('click', onMapClick);		
 	}
@@ -217,9 +218,10 @@ map = (function () {
         layer.on('init', function() {
 	        addGUI();
             initFeatureSelection();
-            //console.log('1 map loc:', map_start_location, '\ncamera pos:', scene.camera.position);
-            if (defaultpos && typeof scene.camera.position != "undefined") {
-                map_start_location = [scene.camera.position[1], scene.camera.position[0], scene.camera.position[2]]
+            var camera = scene.config.cameras[scene.getActiveCamera()];
+            // if a camera position is set in the scene file, use that
+            if (defaultpos && typeof camera.position != "undefined") {
+                map_start_location = [camera.position[1], camera.position[0], camera.position[2]]
             }
             map.setView([map_start_location[0], map_start_location[1]], map_start_location[2]);
         });
