@@ -126,8 +126,9 @@ map = (function () {
                 var position = '19' + '/' + latlng.lat + '/' + latlng.lng;
                 var josmUrl = 'http://www.openstreetmap.org/edit?editor=remote#map='+position;
 
-                if ( properties.kind == 'light_rail' || properties.kind == 'subway' || properties.kind == 'train' || properties.kind == 'tram' )
-                {
+                if ( // !properties.colour && 
+                     (properties.kind == 'light_rail' || properties.kind == 'subway' || properties.kind == 'train' || properties.kind == 'tram')
+                ) {
                     popup.innerHTML = '<span class="labelInner">' + 'You found a transit line to enhance!' + '</span><br>';
                     popup.appendChild(createEditLinkElement(url, 'iD', 'Edit with iD ➹'));
                     popup.appendChild(createEditLinkElement(josmUrl, 'JOSM', 'Edit with JOSM ➹'));
@@ -229,32 +230,32 @@ map = (function () {
     
                     if( key.shift ) {
                         window.open(url, '_blank');
-                    } else {
-                        var properties = selection.feature.properties;
-
-                        var label = '';
-                        //console.log(properties);
-                        for (var x in properties) {
-                            var val = properties[x]
-                            label += "<span class='labelLine' key="+x+" value="+val+"'>"+x+" : "+val+"</span><br>"
-                        }
-
-                        if (label != '') {
-                            popup.style.left = (pixel.x) + 'px';
-                            popup.style.top = (pixel.y) + 'px';
-                            popup.style.margin = '0px';
-                            popup.innerHTML = '<span class="labelInner">' + label + '</span>';
-                        }
-
-                        // JOSM editor link
-                        var position = '19' + '/' + latlng.lat + '/' + latlng.lng;
-                        var josmUrl = 'http://www.openstreetmap.org/edit?editor=remote#map='+position;
-    
-                        popup.appendChild(createEditLinkElement( url, 'iD', 'Edit with iD ➹') );
-                        popup.appendChild(createEditLinkElement( josmUrl, 'JOSM', 'Edit with JOSM ➹') );
-                        popup.appendChild(createEditLinkElement( mapzenTileURL(), 'rawTile', 'View tile data ➹') );
-                        popup.style.visibility = 'visible';
-                    }
+                    }//  else {
+//                         var properties = selection.feature.properties;
+// 
+//                         var label = '';
+//                         //console.log(properties);
+//                         for (var x in properties) {
+//                             var val = properties[x]
+//                             label += "<span class='labelLine' key="+x+" value="+val+"'>"+x+" : "+val+"</span><br>"
+//                         }
+// 
+//                         if (label != '') {
+//                             popup.style.left = (pixel.x) + 'px';
+//                             popup.style.top = (pixel.y) + 'px';
+//                             popup.style.margin = '0px';
+//                             popup.innerHTML = '<span class="labelInner">' + label + '</span>';
+//                         }
+// 
+//                         // JOSM editor link
+//                         var position = '19' + '/' + latlng.lat + '/' + latlng.lng;
+//                         var josmUrl = 'http://www.openstreetmap.org/edit?editor=remote#map='+position;
+//     
+//                         popup.appendChild(createEditLinkElement( url, 'iD', 'Edit with iD ➹') );
+//                         popup.appendChild(createEditLinkElement( josmUrl, 'JOSM', 'Edit with JOSM ➹') );
+//                         popup.appendChild(createEditLinkElement( mapzenTileURL(), 'rawTile', 'View tile data ➹') );
+//                         popup.style.visibility = 'visible';
+//                     }
                 });
             }
         });
