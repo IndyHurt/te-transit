@@ -14,33 +14,75 @@
       google.load("visualization", "1", {packages:["corechart"]});
       google.setOnLoadCallback(drawChart);
       function drawChart() {
-
         var data = google.visualization.arrayToDataTable([
-          ['Colour or Not', 'p_colour'],
-          ['Transit without Colour', 124],
-          ['Transit with Colour',  0]
+          ['hex_color', 'p_hex_color'],
+          ['#cccccc', 1],
+          ['#ffffff', 4],
+          ['#ff0000', 2],
+          ['#ee352e', 3],
+          ['#512826', 1],
+          ['#e94333', 1],
+          ['#d81e05', 1],
+          ['#f9461c', 1],
+          ['#ff6319', 4],
+          ['#62361b', 1],
+          ['#f89038', 1],
+          ['#e87511', 1],
+          ['#996633', 2],
+          ['#ff9933', 1],
+          ['#b99e51', 1],
+          ['#fccc0a', 3],
+          ['#f9d616', 1],
+          ['#d5cfa3', 1],
+          ['#fde310', 1],
+          ['#f9e300', 1],
+          ['#fff300', 1],
+          ['#ffff33', 1],
+          ['#6cbe45', 1],
+          ['#339933', 1],
+          ['#009b3a', 1],
+          ['#00933c', 3],
+          ['#009d57', 1],
+          ['#00a65c', 1],
+          ['#00ac67', 1],
+          ['#008751', 1],
+          ['#009e60', 1],
+          ['#0099cc', 1],
+          ['#00a1de', 1],
+          ['#0d7bba', 1],
+          ['#0072c6', 1],
+          ['#a7a9ac', 1],
+          ['#a5c8ff', 1],
+          ['#2850ad', 3],
+          ['#6d6e71', 1],
+          ['#0000ff', 1],
+          ['#522398', 1],
+          ['#8300bb', 1],
+          ['#9561a9', 1],
+          ['#a02d96', 1],
+          ['#b933ad', 2],
+          ['#e27ea6', 1],
+          ['#f94f8e', 1],
+          ['#c60c30', 1],
+          ['#ee3a43', 1]
         ]);
 
         var options = {
-          title: 'North America, Transit Line Colours',
-          colors: ['aqua', 'grey']
+          legend: 'bottom',
+          colors: ['#cccccc',   '#ffffff', '#ff0000',   '#ee352e',  '#512826', '#e94333',   '#d81e05',  '#f9461c',  '#ff6319',  '#62361b',  '#f89038', '#e87511', '#996633',  '#ff9933',  '#b99e51',  '#fccc0a',  '#f9d616',  '#d5cfa3', '#fde310',   '#f9e300',  '#fff300',  '#ffff33',  '#6cbe45',  '#339933',  '#009b3a',  '#00933c', '#009d57',   '#00a65c',  '#00ac67',  '#008751',  '#009e60',   '#0099cc',  '#00a1de',  '#0d7bba',  '#0072c6',  '#a7a9ac', '#a5c8ff',  '#2850ad',  '#6d6e71',  '#0000ff',  '#522398',  '#8300bb',  '#9561a9',  '#a02d96',  '#b933ad',  '#e27ea6',  '#f94f8e',  '#c60c30',  '#ee3a43']
         };
         
-        var formatter1 = new google.visualization.NumberFormat({pattern:'###,###'});
-        formatter1.format(data, 1);
-        
-        var chart = new google.visualization.PieChart(document.getElementById('transit_piechart'));
+        var chart = new google.visualization.PieChart(document.getElementById('gtfs_piechart'));
 
         chart.draw(data, options);
       }
-      window.addEventListener('resize', drawChart);
     </script>
 
   </head>
   <body>
     <section class="page-header">
       <h1 class="project-name">Does Your Transit Line Have a Color?</h1>
-      <h2 class="project-tagline">Simple visualization of OpenStreetMap transit lines that need colors.</h2>
+      <h2 class="project-tagline">Simple visualization of OpenStreetMap transit lines that need colours.</h2>
       <a href="https://github.com/IndyHurt/te-transit" class="btn">View on GitHub</a>
     </section>
 
@@ -48,60 +90,327 @@
       <h1>
 <a id="opening" class="anchor" href="#opening" aria-hidden="true"><span class="octicon octicon-link"></span></a>For transit features, colors help distinguish lines!</h1>
 
-<p>Welcome to our <b>Targeted Editing</b> series where today you can hop on your favorite transit line, or make <a href="http://www.openstreetmap.org">OpenStreetMap</a> data divine! (Both take about the same amount of time.)</p>
- 
-<p>Read on for some basic uses for transit line colours, why I am using the British spelling, and where you can check to see if you can use your local knowlege to add colours where they are needed.</p>
+<p>Welcome to our <strong>Targeted Editing</strong> series where today you can hop on your favorite transit line, or make <a href="http://www.openstreetmap.org">OpenStreetMap</a> data divine! (Both take about the same amount of time.)</p>
 
-<ol style="list-style-type:disc">
-        <li><b>How can transit line colours be used?</b>
-          <p></p>
-            <ol>
-                <li>Help with map rendering.  Transit line colours can be used to make custom maps designed specifically for transit users.</li> 
-                <p></p>
-                <li>Help with wayfinding.  A line colour on a map can help a traveler quickly understand generally where a route goes, without needing prior spatial knowledge of the origin or destination stops.</li>
-            </ol>
-        </li>
-        <p></p>
-        <li><b>We are missing some transit line colours for transit lines here!</b>
+<p>Read on for some basic uses for transit line colours, why I am using the British spelling, and where you can check to see if you can use your local knowledge to add colours where they are needed.</p>
 
-            <p></p>
-            <ul>
-                <li>Check out this pie chart for transit lines:</li>
-                <div id="transit_piechart" style="width: 100%; height: 500px;"></div>
-                <p>Of course, not all transit lines have a colour.</p>
-            </ul>
-        </li>
-        <p></p>
-        <li><b>How you can help improve transit lines without colours:</b>
-            <p></p>
-            <ol>
-                <li>Here is a map showing transit lines.  To add a colour to a transit line, hover over one of the bright blue highlighted features to bring up an info bubble with links to editing tools that can be used to add features.</li>
-               <p>
-                <iframe width="100%" height="400px" src="map/?transit"></iframe>
-                <br>
-                ( <a href="map/?transit" target="_blank">Open this map in a new tab ➹</a> )
-                </p> 
-                  <ul>See the wiki pages for <a href="http://wiki.openstreetmap.org/wiki/Key:colour">colour</a> for advantageous colour names and hex codes.  You may also find features that are tagged "color" which isn't wrong, it's just not preferred.  Consistency is really valuable in data, so when possible, choose the British spelling.</ul>
-                <p></p>
-                  <ul><b>But where do you add the colour tag?</b>  It should be added to a relation like the <a href="http://wiki.openstreetmap.org/wiki/Relation:route_master">route_master</a>.  The route_master is a type of relation, and it contains all of the important information associated with the route.  Alternatively, the colour tag can be added directly to individual ways.</ul>
-                <li>Not familiar with San Francisco?  Search or pan over to your home town to contribute your local knowledge to the map. You will see your changes right away in OpenStreetMap. You will also be able to see them in all versions of the <a href="https://mapzen.com/projects/vector-tiles">Mapzen Vector Tiles</a> within an hour, including the map right here on this page!</li>
-                <p></p>
-                <li>Need instructions on how to edit with iD?  Here are some outstanding tutorials from LearnOSM, the OpenStreetMap wiki, and the United States Department of State&#39;s Humanitarian Information Unit:</li>
-                    <p></p>
-                    <ol>
-                      <li><a href="http://learnosm.org/en/">LearnOSM</a></li>
-                      <li><a href="http://wiki.openstreetmap.org/wiki/Beginners'_guide">OSM Beginners' Guide</a></li>
-                      <li><a href="http://mapgive.state.gov/learn-to-map/">MapGive Learn to Map</a></li>
-                    </ol>  
-                <p></p>
-                <l1>Are you a mapping wiz and interested in a more advanced editor?  Try out <a href="https://josm.openstreetmap.de">JOSM</a> with <a href="https://www.mapbox.com/blog/osm-mapping-guide/">excellent documentation</a> from Mapbox.
-                  <p></p>
-                Thanks, and please check back soon for the next in our series!
+<h4 id="how-can-transit-line-colours-be-used?">How can transit line colours be used?</h4>
+
+<ol>
+<li><p><strong>Help with map rendering.</strong>  Transit line colours can be used to make custom maps designed specifically for transit users.</p></li>
+<li><p><strong>Help with wayfinding.</strong>  A line colour on a map can help a traveler quickly understand generally where a route goes, without needing prior spatial knowledge of the origin or destination stops.  </p></li>
+</ol>
+
+<h4 id="are-there-transit-features-in-openstreetmap?-yes!">Are there transit features in OpenStreetMap?  Yes!</h4>
+
+<p>But how do we quantify them?  Let me count the <a href="http://wiki.openstreetmap.org/wiki/Way">ways</a>&hellip; 💗 actually, no, let&rsquo;s not do that.  That would only tell us how many individual segments we have, which is a bit abstract.  It effectively translates to the number of segments editors have digitized.  Not trip segments, mind you, just individual ways with unique ids.  Instead, let&rsquo;s look at kilometers.        </p>
+
+<p><center><h2>Kilometers of Transit Lines</h2></center></p>
+
+<table><thead>
+<tr>
+<th style="text-align: center"></th>
+<th style="text-align: center">Railway Relations</th>
+<th style="text-align: center">Railway Ways</th>
+<th style="text-align: center">Route Relations</th>
+<th style="text-align: center">Route Ways</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: center"><strong>Beijing</strong></td>
+<td style="text-align: center"></td>
+<td style="text-align: center">4,835</td>
+<td style="text-align: center">11,655</td>
+<td style="text-align: center"></td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>Berlin</strong></td>
+<td style="text-align: center"></td>
+<td style="text-align: center">10,385</td>
+<td style="text-align: center">45,289</td>
+<td style="text-align: center"></td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>Boston</strong></td>
+<td style="text-align: center"></td>
+<td style="text-align: center">663</td>
+<td style="text-align: center">994</td>
+<td style="text-align: center"></td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>DC</strong></td>
+<td style="text-align: center">25</td>
+<td style="text-align: center">3,763</td>
+<td style="text-align: center">16,018</td>
+<td style="text-align: center"></td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>London</strong></td>
+<td style="text-align: center">106</td>
+<td style="text-align: center">12,738</td>
+<td style="text-align: center">50,489</td>
+<td style="text-align: center">2</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>Moscow</strong></td>
+<td style="text-align: center"></td>
+<td style="text-align: center">11,070</td>
+<td style="text-align: center">69,602</td>
+<td style="text-align: center"></td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>New York</strong></td>
+<td style="text-align: center"></td>
+<td style="text-align: center">6,025</td>
+<td style="text-align: center">21,745</td>
+<td style="text-align: center"></td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>Paris</strong></td>
+<td style="text-align: center">3</td>
+<td style="text-align: center">9,013</td>
+<td style="text-align: center">44,841</td>
+<td style="text-align: center">0.10</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>San Francisco</strong></td>
+<td style="text-align: center">21</td>
+<td style="text-align: center">1,381</td>
+<td style="text-align: center">6,372</td>
+<td style="text-align: center"></td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>São Paulo</strong></td>
+<td style="text-align: center"></td>
+<td style="text-align: center">1,909</td>
+<td style="text-align: center">8,642</td>
+<td style="text-align: center"></td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>Sydney</strong></td>
+<td style="text-align: center"></td>
+<td style="text-align: center">1,576</td>
+<td style="text-align: center">6,116</td>
+<td style="text-align: center">0.58</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>Tokyo</strong></td>
+<td style="text-align: center">69</td>
+<td style="text-align: center">11,893</td>
+<td style="text-align: center">37,831</td>
+<td style="text-align: center">0.14</td>
+</tr>
+</tbody></table>
+
+<p><caption><a href="https://github.com/IndyHurt/poi-stats/blob/gh-pages/queries/transit_sql.sql"><sup>*</sup>SQL queries</a> for those interested in generating stats for additional cities.</caption></p>
+
+<h4 id="what&#39;s-happening-here?"><em>What&rsquo;s happening here?</em></h4>
+
+<p>Transit features are relatively well represented in our sample of cities.  The railway key is more often associated with ways, whereas the route key is more often associated with relations.  </p>
+
+<p>What does it mean for one city to have more kilometers than another city?  Diversity of added transit lines could be one factor.  Separate lines for inbound and outbound routes can be another.  Yet a third factor could be the detail of editing because a very straight line between point A and point B will be shorter than a curvy line between the same point A and point B.  Last but not least, these cities are different in size with varying public transportation networks.  Given the area of each of these cities (as determined by the Mapzen metro extract, not reality) these numbers are all impressive.</p>
+
+<p>What does it mean when the length of relations far exceeds the length of ways?  The most dominant explanation goes to <a href="http://wiki.openstreetmap.org/wiki/Osm2pgsql">Osm2pgsql</a> and the consistency of tags editors apply.  The data for this post was imported into a PostgreSQL database using Osm2pgsql.  When a relation and it&rsquo;s members have the same tags, Osm2pgsql drops the members during the import process.             </p>
+
+<p>The table above is a result of looking at the collective distance across many transit types (buses, funiculars, light rails, monorails, rails, railways, subways, trains, trams, and trolleybuses).  </p>
+
+<p>Breaking this down further, at least some colour is applied in every city, and you are more likely to find it applied to <strong>route relations</strong>.  This makes sense because when a relation is present, it is much easier to add additional tags to it. Tags on a relation apply to all the ways that are members of the relation.  With this in mind let&rsquo;s review route relations, and the transit types that are more likely to be referred to with colours.  Think of things like <a href="http://www.transitchicago.com/redline/">&ldquo;The Red Line&rdquo;</a> in Chicago.</p>
+
+<p><center><h2>Percent of Route Relations with Colour</h2></center></p>
+
+<table><thead>
+<tr>
+<th style="text-align: center"></th>
+<th style="text-align: center">Light Rail</th>
+<th style="text-align: center">Subway</th>
+<th style="text-align: center">Train</th>
+<th style="text-align: center">Tram</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: center"><strong>Beijing</strong></td>
+<td style="text-align: center"></td>
+<td style="text-align: center">72%</td>
+<td style="text-align: center"></td>
+<td style="text-align: center"></td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>Berlin</strong></td>
+<td style="text-align: center">100%</td>
+<td style="text-align: center">100%</td>
+<td style="text-align: center">61%</td>
+<td style="text-align: center">81%</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>Boston</strong></td>
+<td style="text-align: center"></td>
+<td style="text-align: center">100%</td>
+<td style="text-align: center">81%</td>
+<td style="text-align: center">13%</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>DC</strong></td>
+<td style="text-align: center"></td>
+<td style="text-align: center">88%</td>
+<td style="text-align: center">83%</td>
+<td style="text-align: center"></td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>London</strong></td>
+<td style="text-align: center"></td>
+<td style="text-align: center">100%</td>
+<td style="text-align: center">51%</td>
+<td style="text-align: center">100%</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>Moscow</strong></td>
+<td style="text-align: center"></td>
+<td style="text-align: center"></td>
+<td style="text-align: center">2%</td>
+<td style="text-align: center"></td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>New York</strong></td>
+<td style="text-align: center">72%</td>
+<td style="text-align: center">98%</td>
+<td style="text-align: center">94%</td>
+<td style="text-align: center"></td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>Paris</strong></td>
+<td style="text-align: center">100%</td>
+<td style="text-align: center">96%</td>
+<td style="text-align: center">94%</td>
+<td style="text-align: center">96%</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>San Francisco</strong></td>
+<td style="text-align: center">8%</td>
+<td style="text-align: center">100%</td>
+<td style="text-align: center">57%</td>
+<td style="text-align: center">19%</td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>São Paulo</strong></td>
+<td style="text-align: center"></td>
+<td style="text-align: center">100%</td>
+<td style="text-align: center">100%</td>
+<td style="text-align: center"></td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>Sydney</strong></td>
+<td style="text-align: center">100%</td>
+<td style="text-align: center"></td>
+<td style="text-align: center">48%</td>
+<td style="text-align: center"></td>
+</tr>
+<tr>
+<td style="text-align: center"><strong>Tokyo</strong></td>
+<td style="text-align: center">19%</td>
+<td style="text-align: center">92%</td>
+<td style="text-align: center">12%</td>
+<td style="text-align: center"></td>
+</tr>
+</tbody></table>
+
+<h4 id="what&#39;s-happening-here?"><em>What&rsquo;s happening here?</em></h4>
+
+<p>Spatial variability, that&rsquo;s what!</p>
+
+<p>Figuring this out is like a scavenger hunt&hellip; only indoors&hellip; with a database.  Ok, so not like a scavenger hunt, but definitely exploratory data analysis.  Are we missing some things?  Probably.  The queries are specifically looking for relations with the <code>route</code> key.  In Moscow, some of the colour is only applied to the <code>route_master</code> which works well when relations representing the inbound and outbound routes are members.</p>
+
+<p>It is easy to focus on relations that are tagged <code>route=light_rail</code>, <code>route=subway</code>, <code>route=train</code>, or <code>route=tram</code>, but each city can be different.  For example, Tokyo also has 133 kilometers of relations that are tagged <code>railway=subway</code> and half of them have a populated colour tag.  As you can see from the table above, Tokyo also has relations that are tagged <code>route=subway</code>.  In other cases, a relation doesn&rsquo;t exist at all, but an editor has taken the time to add colour to the individual ways.  </p>
+
+<h4 id="helpful-tags">Helpful Tags</h4>
+
+<ul>
+<li><a href="http://wiki.openstreetmap.org/wiki/Names">name</a>=*</li>
+<li><a href="http://wiki.openstreetmap.org/wiki/Key:ref">ref</a>=*</li>
+<li><a href="http://wiki.openstreetmap.org/wiki/Key:colour">colour</a>=*<br>
+
+<ul>
+<li>Tips (because consistency is key)</li>
+<li>Use an RGB colour code (hex triplet) preceded by a hash or pound symbol with lower case letters where present.
+
+<ul>
+<li>YES:  #ff0000</li>
+<li>NO:  FF0000</li>
+</ul></li>
+<li>Alternatively, use a CSS color name in all lower case letters.  No spaces, no underscores.
+
+<ul>
+<li>YES:  mediumblue</li>
+<li>NO:  medium blue</li>
+<li>NO:  Medium_Blue<br></li>
+</ul></li>
+</ul></li>
+</ul>
+
+<p>Again, the best place to add the colour tag is to the <strong>route relation</strong>.  Be sure to add it to inbound and outbound route relations where present.  If a route_master is present, add the colour tag to it, too.  A route_master is used to group relations.  An example in transit would be a route_master that groups the inbound and outbound route relations.  If no relation is present, this is your opportunity to add one.  Adding the colour tag to the individual ways should be a last resort.</p>
+
+<p>How do you find the route relation?  Using iD, you can always click any way, and if it is a member of a relation, you will find a link to the relation listed below the tags when you are in edit mode.  Check the left side of the screen, and scroll all the way down to the bottom.  Sometimes you will find multiple relations.   </p>
+
+<p>For details on relations in general and the specifics of <code>route</code> and <code>route_master</code> relations, explore these wiki links:</p>
+
+<ul>
+<li><a href="http://wiki.openstreetmap.org/wiki/Relation">relation</a></li>
+<li><a href="http://wiki.openstreetmap.org/wiki/Relation:route">route</a>=* </li>
+<li><a href="http://wiki.openstreetmap.org/wiki/Relation:route_master">route_master</a></li>
+</ul>
+
+<p>A promise to explain why I am using the <a href="https://en.wikipedia.org/wiki/American_and_British_English_spelling_differences">British spelling</a> for the word &ldquo;colour&rdquo; begins now:  </p>
+
+<p>In the simplest terms, the British spelling is the preferred spelling for keys and values (tags, collectively) in OpenStreetMap.  Nearly all<sup>*</sup> of the data explored for this post had the British spelling when colour was present and evaluated.  Other British spellings to watch out for in OpenStreetMap include centre, jewellery, kerb, and neighbourhood.</p>
+
+<p><sup>*</sup><a href="https://github.com/IndyHurt/poi-stats/blob/gh-pages/queries/transit_sql.sql">See the queries</a> for additional tags that have been used to represent colour.</p>
+
+<h4 id="where-to-start">Where to Start</h4>
+
+<p>The best place to start is always where you have local knowledge.  If you are familiar with a set of transit routes that are commonly referred to by colour and it would make sense to symbolize the routes with these well known colours, please review them in OpenStreetMap to ensure that they have been tagged properly.  </p>
+
+<p>It never hurts to augment your local knowledge with a bit of research for verification.  Make notes when you are taking public transportation, and seek out authoritative sources.  Mapzen&rsquo;s <a href="https://transit.land/feed-registry/">Transitland Feed Registry</a> is another excellent resource.  </p>
+
+<p>It contains a steadily growing collection of <a href="https://en.wikipedia.org/wiki/General_Transit_Feed_Specification">GTFS</a> data, and some of the feeds include route colour!  At the time of this writing, our Feed Registry has 159 GTFS feeds with populated route colour data.  In total, you will find 49 unique colours and all of it comes from transit agencies.  You could not ask for a more authoritative source! </p>
+
+<p><center><h2>Route Colours from TransitLand&rsquo;s Feed Registry</h2></center></p>
+
+<div id="gtfs_piechart" style="width: 700px; height: 700px;"></div> 
+
+<p>Special thanks to Transitland engineers <a href="https://github.com/doublestranded">Alex</a> &amp; <a href="https://github.com/irees">Ian</a> for querying the Transitland Feed Registry API and sorting the colors for this post!  If you are interested in the magic of this sorting, check out Ian&rsquo;s <a href="https://gist.github.com/irees/f70babd3f6f9580d67bc">transitland_route_colors gist</a>.  We all had a lot of fun querying the Transitland API.  Go ahead, give it a try!  Here&rsquo;s a sample URL to get your started: </p>
+
+<p><code>http://transit.land/api/v1/routes.json?vehicle_type=metro&amp;per_page=1000</code></p>
+
+<p>If you find a feed that you can use to verify your local knowledge, be sure to check the license to make sure it is permissible to add the data to OpenStreetMap.  Most importantly, include reference to the agency with the <a href="http://wiki.openstreetmap.org/wiki/Key:source">source</a> key.</p>
+
+<h4 id="interactive-map">Interactive Map</h4>
+
+<p>Would it be helpful to see where colour is potentially missing from your favorite transit line in OpenStreetMap?  There&rsquo;s a map for that!  Hover over any of the bright blue highlighted features to bring up an info bubble with links to editing tools that can be used to add additional tags.</p>  
+
+<p>
+<iframe width="100%" height="400px" src="map/?transit"></iframe>
+<br>
+( <a href="map/?transit" target="_blank">Open this map in a new tab ➹</a> )
+</p> 
+
+<p>If you are not familiar with Washington DC, open the full screen map and search for your city!  You might even find your favorite route missing all together.  Sometimes you will notice a collection of station icons without a route connecting them.</p>
+
+<h4 id="getting-started-with-openstreetmap">Getting Started with OpenStreetMap</h4>
+
+<p>Need instructions on how to edit with iD? Here are some links to outstanding tutorials from LearnOSM, the OpenStreetMap wiki, and the United States Department of State&rsquo;s Humanitarian Information Unit:</p>
+
+<ul>
+<li><a href="http://learnosm.org/en/">LearnOSM</a></li>
+<li><a href="http://wiki.openstreetmap.org/wiki/Beginners&#x27;_guide">OSM Beginners&rsquo; Guide</a></li>
+<li><a href="http://mapgive.state.gov/learn-to-map/">MapGive Learn to Map</a></li>
+</ul>
+
+<p>Are you a mapping wiz and interested in a more advanced editor? Try out <a href="https://josm.openstreetmap.de">JOSM</a> with <a href="https://www.mapbox.com/blog/osm-mapping-guide/">excellent documentation</a> from Mapbox.</p>
+
+<p>Puzzled by the mystery of relations?  InaSAFE has a <a href="http://docs.inasafe.org/en/training/old-training/intermediate/osm/301-advanced-editing.html">JOSM tutorial featuring relations</a>.</p>
+
+<p>Get outside, increase your local knowledge, and share it with the world through your OpenStreetMap edits!</p>
 
 
-            </ol>
-        </li>
-    </ol>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/IndyHurt/te-transit">te-transit</a> is maintained by <a href="https://github.com/IndyHurt">IndyHurt</a>.</span>
