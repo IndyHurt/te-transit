@@ -79,6 +79,10 @@
         var options = {
           title: 'Metro Line Route Colours from Transitland\'s Feed Registry',
           legend: 'bottom',
+          chartArea: {
+            width: 100%,
+            height: 100%
+          },
           colors: ['#cccccc',   '#ffffff', '#ff0000',   '#ee352e',  '#512826', '#e94333',   '#d81e05',  '#f9461c',  '#ff6319',  '#62361b',  '#f89038', '#e87511', '#996633',  '#ff9933',  '#b99e51',  '#fccc0a',  '#f9d616',  '#d5cfa3', '#fde310',   '#f9e300',  '#fff300',  '#ffff33',  '#6cbe45',  '#339933',  '#009b3a',  '#00933c', '#009d57',   '#00a65c',  '#00ac67',  '#008751',  '#009e60',   '#0099cc',  '#00a1de',  '#0d7bba',  '#0072c6',  '#a7a9ac', '#a5c8ff',  '#2850ad',  '#6d6e71',  '#0000ff',  '#522398',  '#8300bb',  '#9561a9',  '#a02d96',  '#b933ad',  '#e27ea6',  '#f94f8e',  '#c60c30',  '#ee3a43']
         };
         
@@ -382,7 +386,7 @@
 
 <p>It contains a steadily growing collection of <a href="https://en.wikipedia.org/wiki/General_Transit_Feed_Specification">GTFS</a> data, and some of the feeds include route colour!  At the time of this writing, our Feed Registry has 159 GTFS feeds with populated route colour data.  In total, you will find 49 unique colours and all of it comes from transit agencies.  You could not ask for a more authoritative source! </p>
 
-<div id="gtfs_piechart" style="width: 100%; height: 100%;"></div> 
+<div id="gtfs_piechart"></div> 
 
 <p>Special thanks to Transitland engineers <a href="https://github.com/doublestranded">Alex</a> &amp; <a href="https://github.com/irees">Ian</a> for querying the Transitland Feed Registry API and sorting the colors for this post!  If you are interested in the magic of this sorting, check out Ian&rsquo;s <a href="https://gist.github.com/irees/f70babd3f6f9580d67bc">transitland_route_colors gist</a>.  We all had a lot of fun querying the Transitland API.  Go ahead, give it a try!  Here&rsquo;s a sample URL to get your started: </p>
 
