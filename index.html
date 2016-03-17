@@ -386,15 +386,31 @@
 
 <p>It never hurts to augment your local knowledge with a bit of research for verification.  Make notes when you are taking public transportation, and seek out authoritative sources.  Mapzen&rsquo;s <a href="https://transit.land/feed-registry/">Transitland Feed Registry</a> is another excellent resource.  </p>
 
-<p>It contains a steadily growing collection of <a href="https://en.wikipedia.org/wiki/General_Transit_Feed_Specification">GTFS</a> data, and some of the feeds include route colour!  At the time of this writing, our Feed Registry has 159 GTFS feeds with populated route colour data.  In total, you will find 49 unique colours and all of it comes from transit agencies.  You could not ask for a more authoritative source! </p>
+<p>The Feed Registry contains a steadily growing collection of <a href="https://en.wikipedia.org/wiki/General_Transit_Feed_Specification">GTFS</a> data, and some of the feeds include route colour!  At the time of this writing, our Feed Registry has 159 GTFS feeds with populated route colour data.  In total, you will find 49 unique colours just for metro lines, and all of them comes from transit agencies, civic groups, universities, and community contributors.  You could not ask for a more authoritative source! </p>
 
-<div id="gtfs_piechart"></div> 
+<div id="gtfs_piechart" style="width: 900px; height: 500px"></div> 
 
 <p>Special thanks to Transitland engineers <a href="https://github.com/doublestranded">Alex</a> &amp; <a href="https://github.com/irees">Ian</a> for querying the Transitland Feed Registry API and sorting the colors for this post!  If you are interested in the magic of this sorting, check out Ian&rsquo;s <a href="https://gist.github.com/irees/f70babd3f6f9580d67bc">transitland_route_colors gist</a>.  We all had a lot of fun querying the Transitland API.  Go ahead, give it a try!  Here&rsquo;s a sample URL to get your started: </p>
 
 <p><code>http://transit.land/api/v1/routes.json?vehicle_type=metro&amp;per_page=1000</code></p>
 
+<p>If “query the API” sounds like Greek to you, the user interface can be used to visualize data from the <a href="https://transit.land/feed-registry/">Transitland Feed Registry</a>. When you land on the Transitland Feed Registry page, follow the link in the Operator Name column to the agency you are interested in, click the “view” link for the routes if there is one, and wait a few moments for the data to render in the geojson.io viewer. Choose the table view and look for the title and stroke columns.</p>
+
+<p>You can also download the GeoJSON directly via the API and open it in your map renderer of choice (<a href="http://transit.land/api/v1/routes.geojson?vehicle_type=metro&per_page=1000">click to download the 4.6 MB GeoJSON file</a>):
+
 <p>If you find a feed that you can use to verify your local knowledge, be sure to check the license to make sure it is permissible to add the data to OpenStreetMap.  Most importantly, include reference to the agency with the <a href="http://wiki.openstreetmap.org/wiki/Key:source">source</a> key.</p>
+
+<p><code>http://transit.land/api/v1/routes.geojson?vehicle_type=metro&amp;per_page=1000</code></p>
+
+<p>Here is what you will see for the Transit Authority of River City in Louisville, Kentucky:</p>
+
+<img src="/images/transitland.png" alt="Transitland Feed Registry">
+
+<p><code>https://transit.land/api/v1/routes.geojson?operatedBy=o-dng1-transitauthorityofrivercity</code></p>
+
+<p>You <a href="https://transit.land/api/v1/routes.geojson?operatedBy=o-dng1-transitauthorityofrivercity">can click to download the 2.4 MB GeoJSON file</a> or open in <a href="http://geojson.io/#data=data:text/x-url,http%3A%2F%2Ftransit.land%2Fapi%2Fv1%2Froutes.geojson%3FoperatedBy%3Do-dng1-transitauthorityofrivercity">geojson.io</a> (be patient, it will take a few seconds to render).
+
+<p>If you find a feed that you can use to verify your local knowledge, be sure to check the license to make sure it is permissible to add the data to OpenStreetMap.  Most importantly, include reference to the agency with the <a href="http://wiki.openstreetmap.org/wiki/Key:source">source</a> key.  
 
 <h4 id="interactive-map">Interactive Map</h4>
 
@@ -406,7 +422,7 @@
 ( <a href="map/?transit" target="_blank">Open this map in a new tab ➹</a> )
 </p> 
 
-<p>If you are not familiar with Washington DC, open the full screen map and search for your city!  You might even find your favorite route missing all together.  Sometimes you will notice a collection of station icons without a route connecting them.</p>
+<p>If you are not familiar with Washington DC, open the full screen map and search for your city!  You might even find your favorite route missing all together.  Sometimes you will notice a collection of station icons without a route connecting them.  Of course, if you see anything missing, you can always shift+click he map to launch the iD editor.  You may have to allow the map page to get around your pop-up blocker.</p>
 
 <h4 id="getting-started-with-openstreetmap">Getting Started with OpenStreetMap</h4>
 
